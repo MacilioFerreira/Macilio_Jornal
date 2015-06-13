@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+	
+    <persistence-unit name="jornal" >
+       	<provider>org.hibernate.ejb.HibernatePersistence</provider>
+       	
+        <class>br.ufc.jornal.model.Usuario</class>
+     	<class>br.ufc.jornal.model.Noticia</class>
+        <class>br.ufc.jornal.model.Role</class>
+        <class>br.ufc.jornal.model.Secao</class>
+        <class>br.ufc.jornal.model.Classificado</class>
+        <class>br.ufc.jornal.model.Comentario</class>
+        
+    	<exclude-unlisted-classes>false</exclude-unlisted-classes>
+        
+        <properties>   
+			
+			<!-- propriedades do hibernate -->
+			
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			
+			<!-- atualiza o banco, gera as tabelas se for preciso -->
+			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			
+        </properties>
+    </persistence-unit>
+    
+</persistence>
