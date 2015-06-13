@@ -1,3 +1,2 @@
 # Macilio_Jornal
-Trabalho da Disciplina Desenvolvimento de Software para Web, utilizando a linguagem java, 
-no modelo MVC(model, vison, control), utilizando Spring e Hibernate e banco de dados MySql.
+Trabalho da Disciplina Desenvolvimento de Software para Web, feito em Java, utilizando Spring, Hibernate e banco de dados MySql.
