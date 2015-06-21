@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
@@ -36,14 +37,25 @@ public class ClassificadoDao {
 		this.manager.remove(d);
 	}
 	
-	public List<Classificado> getClassificado(){
+/*	public float getOfertas(){ Sem necessidade, pois as ofertas não são armazenadas no banco.
 		
-		String hql = "select d from CLASSIFICADO d where d.melhor_oferta = (select max(melhor_oferta) from CLASSIFICADO ) ";
+		String hql = "select d from CLASSIFICADO d where d.melhor_oferta = "
+				+ "(select max(c.melhor_oferta) from CLASSIFICADO c where c.classificadoId = d.classificadoId ) ";
 		List<Classificado> classificados_banco = this.manager.createQuery(hql, Classificado.class).getResultList();
-		return classificados_banco;
+		return classificados_banco.get(0).getMelhor_oferta();
+	} */
+	
+	public Classificado getCass(Long id_cass){		
+	    
+        String hql = " SELECT c FROM CLASSIFICADO c WHERE c.classificadoId = :id_cass";  
+		
+		TypedQuery<Classificado> query = this.manager.createQuery(hql, Classificado.class);
+		query.setParameter("id_cass", id_cass).getResultList();
+		List<Classificado> classificados = query.getResultList();
+		Classificado c = classificados.get(0);
+		
+		return c;
 	}
 
-	public Classificado getNoticia(Long id){
-		return this.manager.find(Classificado.class, id);
-	}
+	
 }

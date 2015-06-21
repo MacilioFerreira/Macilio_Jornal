@@ -37,4 +37,6 @@ public class SecaoDao {
 	public Secao getSecao(Long id){
 		return this.manager.find(Secao.class, id);
 	}
+	
+	
 }

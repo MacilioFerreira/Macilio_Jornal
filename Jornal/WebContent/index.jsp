@@ -11,15 +11,48 @@
 </head>
 <body>
 
-   <h1> El Mundo </h1> <br />  
+            <!-- Caso em que pode-se fazer o login, porém, não necessita-se fazer o login em uma mesma seção mais de uma vez -->
+            <c:if test="${usuario == null }">
+                 <h4 align="right"> <a href="formularioLogin"> Login </a> </h4>
+            </c:if>
+
+            <!-- Caso para ter o controle de quem está na seção, afinal não pode-se se deslogar o usuário que não está logado. -->
+      		<c:if test="${usuario != null }">
+         		<h4 align="right"> <a href="sair" > Sair </a> </h4> 
+      		</c:if>
    
-   <a href="formularioUsuario"> Cadastrar-se no Sistema </a> <br />
-   <a href="noticiaForm"> Cadastrar Noticia </a> <br/>
-   <a href="formularioLogin"> Login </a>   <br />
-   <a href="formularioSecao"> Cadastrar Seção </a> <br/>
-   <a href="listarUsuario"> Listar Usuários </a> <br />
-   <a href="listarNoticia"> Listar Noticias </a> <br/>
-   <a href="formularioJornalista"> Cadastrar Jornalista </a>
+                  <!-- Titulo do Jornal -->
+     		<h1 align="center"> El Mundo </h1> <br />  
+     		      <!-- Mensagem de Apresentação -->
+     		<h2> Seja muito Bem Vindo ao nosso Jornal!</h2> <br>
+   
+         		<a href="verCategorias"> Visualizar Noticias por Seção </a>  <br>
+                
+                <!-- Controlando o caso de o usuário se cadastrar  depois de logado -->
+                <c:if test="${usuario == null }">
+                     <a href="formularioUsuario"> Cadastrar-se no Sistema </a>   <br>
+                </c:if>
+                
+                <a href="listarClassificado"> Visualizar Classificados </a> <br>
+    
+
+		       <c:if test="${usuario != null }">
+        		   <c:forEach var="role" items="${usuario.roles }" >
+
+                   <c:if test="${role.role == 'Editor'}">
+            		    <a href="formularioJornalista"> Cadastrar Jornalista </a> <br>
+                		<a href="formularioClassificado"> Cadastrar Classificado </a> <br/>
+						<a href="formularioSecao"> Cadastrar Seção </a> <br/>                                             
+              	   </c:if>
+             
+             			<!-- Funcionalidades que o Jornalista pode realizar. -->
+             
+                   <c:if test="${role.role == 'Jornalista'}">
+            		    <a href="noticiaForm"> Cadastrar Noticia </a> <br/>                
+                   </c:if>
+          		   </c:forEach>
+       		   </c:if>
+
 
 </body>
 </html>

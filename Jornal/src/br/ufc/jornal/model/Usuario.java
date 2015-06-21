@@ -30,10 +30,11 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long usuario_id;
 
-	@Column(name = ("LOGIN"), nullable = false, length = 20)
+	@Column(name = ("LOGIN"), nullable = false, length = 50)
 	private String login;
     
-	@Column(name = ("SENHA"), nullable = false, length = 8)
+	// Como estou usando criptografia o suporte a senha deve ser um pouco maior que o normal
+	@Column(name = ("SENHA"), nullable = false, length = 100)
 	private String senha;
 
     @Column(name = ("NOME"), nullable = false, length = 50)
@@ -46,7 +47,7 @@ public class Usuario {
 
 	// Relacionamentos
 	// Usuário pode ter vários pedido em um classificado
-	@OneToMany(mappedBy = "autor", targetEntity = Classificado.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "autorOferta", targetEntity = Classificado.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Classificado> classificados;
 
 	// Um usuário pode adicionar várias noticias..

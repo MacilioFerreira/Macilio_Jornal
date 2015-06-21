@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
@@ -40,5 +41,16 @@ public class NoticiaDao {
 	
 	public Noticia getNoticia(Long id){
 		return this.manager.find(Noticia.class, id);
+	}
+	
+	public List<Noticia> noticia_por_secao(long id_secao){
+		
+		String hql = "select n from NOTICIA n where n.secaoId = :id_secao";
+		
+		TypedQuery<Noticia> query = this.manager.createQuery(hql, Noticia.class);
+		query.setParameter("id_secao", id_secao).getResultList();
+		List<Noticia> noticia_secao = query.getResultList();
+		
+		return noticia_secao;
 	}
 }

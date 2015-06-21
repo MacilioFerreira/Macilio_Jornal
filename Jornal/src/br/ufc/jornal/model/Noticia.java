@@ -25,7 +25,7 @@ public class Noticia {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long noticiaId;
 	
-	@Column (name = ("TITULO"), nullable = false, length = 20)
+	@Column (name = ("TITULO"), nullable = false)
 	private String titulo;
 	
 	@Column (name = ("SUBTITULO"), nullable = false)
@@ -41,6 +41,8 @@ public class Noticia {
 	@Column (name = "SECAO_ID", nullable = false, insertable=false, updatable=false)
 	private Long secaoId;
 	
+	@Column (name = ("VISIVEL"), nullable = false)
+	private boolean isVisivel;
 	
 	// Relacionamentos
 	
@@ -59,8 +61,6 @@ public class Noticia {
 	private List<Comentario> comentarios;
 
 	// Getters e Setters	
-	
-
 	public String getTitulo() {
 		return titulo;
 	}
@@ -116,6 +116,14 @@ public class Noticia {
 
 	public void setSecao(Secao secao) {
 		this.secao = secao;
+	}
+	
+	public boolean isVisivel() {
+		return isVisivel;
+	}
+
+	public void setVisivel(boolean isVisivel) {
+		this.isVisivel = isVisivel;
 	}
 
 	public Usuario getAutorNoticia() {

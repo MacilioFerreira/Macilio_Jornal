@@ -14,7 +14,6 @@ import br.ufc.jornal.dao.RoleDao;
 import br.ufc.jornal.dao.SecaoDao;
 import br.ufc.jornal.dao.UsuarioDao;
 import br.ufc.jornal.model.Secao;
-import br.ufc.jornal.model.Usuario;
 
 @Transactional
 @Controller
@@ -30,25 +29,8 @@ public class SecaoController {
 	private RoleDao roleDao;
 
 	@RequestMapping("formularioSecao")
-	public String formularioSecao(Model model){
-		   List<Secao> secoes = secaoDao.listar();
-		   model.addAttribute("secoes", secoes);		
-           return "/secao/formulario_secao";
-	}
-	
-	@RequestMapping("efetuarLoginSecao")
-	public String efetuarLoginSecao(Usuario user, HttpSession session){
-		
-		String senha = user.getSenha();
-		String login = user.getLogin();
-		
-		Usuario usuario = usuarioDao.getUserLogin(login);
-			
-		if(usuario != null  && usuario.getSenha().equals(senha)  && usuario.user_role("Editor") ){
-			return "/secao/cadastrar_secao";
-		}
-
-		return "redirect:formularioSecao";
+	public String formularioSecao(){
+		  return "/secao/cadastrar_secao";
 	}
 	
 	
@@ -57,9 +39,19 @@ public class SecaoController {
 
 		if(session != null ){
             this.secaoDao.inserir(s);
+            return "redirect:verCategorias";
 	    }
 			
 		return "redirect:formularioSecao";
 			
+	}
+	
+	@RequestMapping("verCategorias")
+	public String verCategorias (Model model){
+		
+		List<Secao> secoes = this.secaoDao.listar();
+		model.addAttribute("secoes", secoes);
+		
+		return "/secao/listar_secoes";
 	}
 }

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity (name = "CLASSIFICADO")
 @Table(name = "CLASSIFICADO")
@@ -36,18 +37,17 @@ public class Classificado {
 	@Column (name = ("MELHOR_OFERTA"), nullable = false)
 	private Float melhor_oferta;
 	
+	@Version
 	@Column (name = ("DATA_OFERTA"), nullable = false)
 	private Timestamp data_oferta;
 	
-	@Column (name = ("AUTOR_ID"), nullable = false, insertable=false, updatable=false)
-	private String autor_id;
-	
+
 	// Relacionamentos
 	
 	// Vários pedidos em um classificado pode ter só um autor
 	@ManyToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "autor_id", referencedColumnName = "usuario_id")
-	private Usuario autor;
+	private Usuario autorOferta;
 	
 	
 	public Long getClassificadoId() {
@@ -108,21 +108,15 @@ public class Classificado {
 		this.data_oferta = data_oferta;
 	}
 
-	public String getAutorId() {
-		return autor_id;
+	public Usuario getAutorOferta() {
+		return autorOferta;
 	}
 
-	public void setAutorId(String autorId) {
-		this.autor_id = autorId;
+	public void setAutorOferta(Usuario autorOferta) {
+		this.autorOferta = autorOferta;
 	}
 
-	public Usuario getAutor() {
-		return autor;
-	}
 
-	public void setAutor(Usuario autor) {
-		this.autor = autor;
-	}
 
 	// To String
 	@Override
@@ -136,7 +130,7 @@ public class Classificado {
 		sb.append("Telefone: " + telefone);
 		sb.append("Melhor Oferta: " + melhor_oferta);
 		sb.append("Data da Oferta: " + data_oferta);
-		sb.append("Autor da Oferta: " + autor_id);		
+	//	sb.append("Autor da Oferta: " + autorOferta.getNome());		
 		
 		return sb.toString();
 	}

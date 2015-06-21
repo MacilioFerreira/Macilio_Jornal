@@ -13,11 +13,11 @@
          <table>
           <tr>
               <td> 
-              <select size="1" name = "secaoId">
+<%--               <select size="1" name = "secaoId">
 			      <c:forEach var="secao" items="${secoes}">
 				       <option value=${secao.secaoId }>${secao.titulo}</option>
 			      </c:forEach>
-		       </select>
+		       </select> --%>
               Titulo: </td>
               <td><input type="text" name="titulo" /> </td>
           </tr> 

@@ -36,7 +36,7 @@ public class RoleDao {
 	}
 	
 	public Role getRoleId(Long id){
-		return this.manager.find(Role.class, new Long(id));
+		return this.manager.find(Role.class, new Long(id)); // Criar um novo id
 	}
 	
 	public Long getRoleNome(String nome){

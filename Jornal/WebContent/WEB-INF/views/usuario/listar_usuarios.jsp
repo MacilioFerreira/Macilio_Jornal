@@ -30,7 +30,6 @@
 	     	<td>${user.senha}</td>
 	     	<td>${user.nome}</td>	     
 	    	<td>${user.email}</td>
-	        <td><a href="excluirUsuario?login=${user.login}">Excluir</a></td>
 	  </tr>
 	  </c:forEach>      
       <tbody>
