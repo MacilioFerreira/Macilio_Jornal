@@ -59,7 +59,7 @@
  
              <sql:setDataSource var="secao" driver="com.mysql.jdbc.Driver" 
    	         url="jdbc:mysql://localhost/jornal"
-    	     user="root" password="macilio" />
+    	     user="root" password="" />
             
             <!-- Realiza uma consulta no banco de dados gerando um ResultSet, utilizando-se da conexão aberta com o dataSource. -->
             
