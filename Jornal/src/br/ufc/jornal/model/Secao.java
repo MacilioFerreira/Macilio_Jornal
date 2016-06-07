@@ -33,19 +33,7 @@ public class Secao {
 	@OneToMany(mappedBy = "secao", targetEntity = Noticia.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Noticia> noticias;
 
-	// To String
-	@Override
-	public String toString() {
-
-		StringBuffer sb = new StringBuffer();
-		sb.append("ID: " + secaoId);
-		sb.append("Titulo: " + titulo);
-		sb.append("Descrição: " + descricao);
-
-		return sb.toString();
-
-	}
-
+	
 	// Getters and Setters
 	public Long getSecaoId() {
 		return secaoId;
@@ -76,7 +64,21 @@ public class Secao {
 	}
 
 	public void setNoticias(List<Noticia> noticias) {
-		this.noticias = noticias;
+		this.noticias = noticias; 
+	}
+	
+	
+	// To String
+	@Override
+	public String toString() {
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append("ID: " + secaoId);
+		sb.append("Titulo: " + titulo);
+		sb.append("Descrição: " + descricao);
+		
+		return sb.toString();
+		
 	}
 
 }

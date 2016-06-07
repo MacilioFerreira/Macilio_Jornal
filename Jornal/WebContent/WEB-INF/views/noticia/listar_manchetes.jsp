@@ -23,7 +23,7 @@
 		</c:forEach>
 	</ul>
 	
-          <center> <a href="verCategorias"> Voltar </a><br> </center>
+          <center> <a href="index.jsp"> Voltar </a><br> </center>
 
 </body>
 </html>

@@ -1,5 +1,10 @@
 package br.ufc.jornal.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -9,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.ufc.jornal.dao.ComentarioDao;
 import br.ufc.jornal.dao.NoticiaDao;
@@ -44,8 +52,8 @@ public class NoticiaController {
 		return "/noticia/formulario_noticia";
 	}
 	
-	@RequestMapping("cadastrarNoticia")
-	public String cadastrarNoticia(Noticia noticia, HttpSession session){
+	@RequestMapping(value = "cadastrarNoticia", method=RequestMethod.POST)
+	public String cadastrarNoticia(Noticia noticia, HttpSession session, @RequestParam("imagem")MultipartFile img){
 		
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		
@@ -54,6 +62,33 @@ public class NoticiaController {
 	    }
 	    
 	    if (usuario.user_role("Jornalista")) {
+	    	
+	    	// Inserindo a Imagem	para a noticia			 
+			 if (!img.isEmpty()) {
+				
+				 try {
+
+					String nome = new Date().getTime() + "-" + img.getOriginalFilename();
+					String caminho = "/home/macilio/jornalImagens/img_noticia/"+nome;
+					byte[] bytes = img.getBytes();
+					BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(new File(caminho)));
+					output.write(bytes);
+					output.close();
+
+					String nomePasta = "/img_noticia/"+nome;
+					// Setando caminho da imagem.
+					noticia.setCaminho_imagem(caminho);
+					noticia.setNomeImagem(nomePasta);
+				    System.out.println("+======="+caminho);
+				 } catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else{
+				return "";
+			}
+
+	    	
 			
 	    	noticia.setAutorNoticia(usuarioDao.getUserId(usuario.getId()));
 	    	noticia.setSecao(secaoDao.getSecao(noticia.getSecaoId()));
@@ -70,10 +105,13 @@ public class NoticiaController {
 	@RequestMapping("lerManchetes")
 	public String listarNoticia(Secao secao, Model model){	
 		
-		
 		List<Noticia> noticias = this.noticiaDao.noticia_por_secao(secao.getSecaoId());
 		model.addAttribute("noticias", noticias);	
 		
+		if (noticias.isEmpty()) {
+			return "mensagem";
+		}
+
 		return "/noticia/listar_manchetes"; 
 	}
 	
@@ -110,11 +148,11 @@ public class NoticiaController {
 		if(userRef != null && userRef.getRoleId() == 3 && noticia.getAutorNoticia().equals(userRef) || userRef.getRoleId() == 2){
 			  
 			  noticia.setVisivel(false);
-			  return "redirect:lerManchetes";
+			  return "redirect:verCategorias";
 		}
 		
 				
-		return "redirect:lerManchetes"; // Tenho que passar a jeitar
+		return "/noticia/listar_noticia"; 
 	}
 
 	// Inserindo comentários
@@ -124,6 +162,7 @@ public class NoticiaController {
 		
         Noticia noticia = noticiaDao.getNoticia(n.getNoticiaId()); 
 		model.addAttribute("noticia", noticia);
+	
 
 		return "/comentario/formulario_comentario";
 		 
@@ -159,7 +198,6 @@ public class NoticiaController {
 			return "/comentario/listar_comentario";
 		}
 		
-		// Erro aqui..
-		return "redirect:lerManchetes"; // Tenho que redirecionar para a noticia que acabou de ser comentada.. 
+		return "/comentario/formulario_comentario"; // Tenho que redirecionar para a noticia que acabou de ser comentada.. 
 	}
 }

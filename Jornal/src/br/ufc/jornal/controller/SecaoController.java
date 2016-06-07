@@ -1,5 +1,6 @@
 package br.ufc.jornal.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -37,12 +38,12 @@ public class SecaoController {
 	@RequestMapping("adicionarSecao")
 	public String adicionarSecao(Secao s, HttpSession session){
 
-		if(session != null ){
-            this.secaoDao.inserir(s);
-            return "redirect:verCategorias";
+		if(session != null && s.getTitulo() != null && s.getDescricao() != null){
+			this.secaoDao.inserir(s);
+			return "redirect:verCategorias";
 	    }
-			
-		return "redirect:formularioSecao";
+		
+		return "redirect:formularioSecao";			
 			
 	}
 	
@@ -50,7 +51,16 @@ public class SecaoController {
 	public String verCategorias (Model model){
 		
 		List<Secao> secoes = this.secaoDao.listar();
-		model.addAttribute("secoes", secoes);
+		
+		// Insiro na lista aquelas seções que possuiem noticias
+		List<Secao> secoes_permitidas = new ArrayList<Secao>();
+		for (Secao secao : secoes) {
+			if (secao.getNoticias().isEmpty() == false) {
+				secoes_permitidas.add(secao);
+			}
+		}
+		// Passando as seções permitidas
+		model.addAttribute("secoes", secoes_permitidas);
 		
 		return "/secao/listar_secoes";
 	}

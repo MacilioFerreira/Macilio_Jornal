@@ -9,6 +9,10 @@
 </head>
 <body>
 
+     <%-- <c:if test="${noticia.caminho_imagem != null }">          
+           <img alt="Imagem da Noticia" src="${noticia.nomeImagem}" title="Foto" width="100" height="50" >
+     </c:if>   --%>  
+
      <h4 align="left">  ${noticia.secao.titulo } <br/> ${noticia.dataNoticia } </h4>
 
        <div id="titulo" title="titulo" align="left">
@@ -16,7 +20,16 @@
        <h4> ${noticia.subtitulo } </h4>
        <b>Autor da Noticia:</b> ${noticia.autorNoticia.nome } <br>
        
-       <p >${noticia.texto} </p> 	
+       <p >
+          ${noticia.texto}  
+       </p> 	
+       
+       <div id="imagem" title="imagem">
+            <c:if test="${noticia.caminho_imagem != null }">
+            <h4> Imagens </h4>          
+              <img alt="Imagem da Noticia" src="${noticia.nomeImagem}" title="Foto" width="450" height="250" >
+            </c:if> 
+       </div>
        
        </div>
        
@@ -26,15 +39,24 @@
            
            <c:if test="${role.role=='Leitor'}">
                <!--  Fazer com que mostre o Comentário!!! -->
-              <a href="formularioComentario?noticiaId=${noticia.noticiaId}"> Inseir Comentário </a>
+              <c:if test="${usuario.getRoleId() == 1 }">
+              <a href="formularioComentario?noticiaId=${noticia.noticiaId}"> Inseir Comentário </a> <br>
+              </c:if>
            </c:if>
            
            <c:if test="${role.role=='Editor'}"> 
-              <a href="excluirNoticia?noticiaId=${noticia.noticiaId }"> Apagar </a>
+           <!-- Como ele pode ter mais de um role, testo se o papel atual no qual ele está logado é Editor -->
+              <c:if test="${usuario.getRoleId() == 2 }"> 
+              <a href="excluirNoticia?noticiaId=${noticia.noticiaId }"> Apagar </a> <br> <!-- Teste para o caso de ter mais de um papel -->
+              </c:if>
            </c:if>
        
            <c:if test="${role.role=='Jornalista'}"> 
-              <a href="excluirNoticia?noticiaId=${noticia.noticiaId }"> Apagar </a>
+           
+           <!-- Como ele pode ter mais de um role, testo se o papel atual no qual ele está logado é Jornalista -->
+              <c:if test="${usuario.getRoleId() == 3 }"> 
+              <a href="excluirNoticia?noticiaId=${noticia.noticiaId }"> Apagar </a> <br>
+              </c:if>
            </c:if>
        
        </c:forEach>

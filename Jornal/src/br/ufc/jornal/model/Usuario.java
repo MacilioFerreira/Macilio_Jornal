@@ -43,6 +43,11 @@ public class Usuario {
 	@Column(name = ("EMAIL"), nullable = false)
 	private String email;
 	
+	@Column(name="CAMINHO_IMAGEM")
+	private String caminho_imagem;
+	
+	private String nomeImagem;
+	
 	private Long roleId;
 
 	// Relacionamentos
@@ -154,6 +159,23 @@ public class Usuario {
 		this.roleId = roleId;
 	}
 	
+	
+	public String getCaminho_imagem() {
+		return caminho_imagem;
+	}
+
+	public void setCaminho_imagem(String caminho_imagem) {
+		this.caminho_imagem = caminho_imagem;
+	}
+	
+	public String getNomeImagem() {
+		return nomeImagem;
+	}
+	
+	public void setNomeImagem(String nomeImagem) {
+		this.nomeImagem = nomeImagem;
+	}
+
 	public boolean user_role(String role){
 		for (Role r : roles) {
 			if (r.getRole().equals(role)) {

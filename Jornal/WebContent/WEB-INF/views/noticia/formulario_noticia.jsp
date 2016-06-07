@@ -12,7 +12,7 @@
 </head>
 <body>
 
-      <form action="cadastrarNoticia" method="POST">
+      <form action="cadastrarNoticia" enctype="multipart/form-data" method="POST">
       <table>
              <thead>
                  
@@ -47,6 +47,15 @@
                      <input type="date" name="data" />
                  </td>
                  </tr>
+                 
+                 <tr>
+                 <td> Imagem para a Noticia: </td>
+                 <td>
+                     <input type="file" name="imagem" />
+                 </td>
+                 </tr>
+                 
+                 
                  
                  <tr> 
                  <td><input type="submit" value="Cadastrar" /> </td>

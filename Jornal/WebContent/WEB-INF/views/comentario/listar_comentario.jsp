@@ -47,15 +47,7 @@
            <c:if test="${role.role=='Leitor'}">
               <a href="formularioComentario?noticiaId=${noticia.noticiaId}"> Inseir Comentário </a>
            </c:if>
-           
-           <c:if test="${role.role=='Editor'}"> 
-              <a href="excluirNoticia?noticiaId=${noticia.noticiaId }"> Apagar </a>
-           </c:if>
-       
-           <c:if test="${role.role=='Jornalista'}"> 
-              <a href="excluirNoticia?noticiaId=${noticia.noticiaId }"> Apagar </a>
-           </c:if>
-       
+                  
        </c:forEach>
        </h4>
        <center> <a href="index.jsp" > Voltar </a> </center>

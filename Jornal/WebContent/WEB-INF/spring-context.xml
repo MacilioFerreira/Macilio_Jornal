@@ -30,6 +30,17 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
+  
+    <!-- Configurando o MultipartResolver -->
+	 <bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- max upload size in bytes -->
+        <property name="maxUploadSize" value="20971520" /> <!-- 20MB -->
+         
+        <!-- max size of file in memory (in bytes) -->
+        <property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
+ 
+    </bean>
 
 	<!-- gerenciamento de jpa pelo spring -->  
 	<bean id="entityManagerFactory"

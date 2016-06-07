@@ -1,7 +1,12 @@
 package br.ufc.jornal.controller;
 
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -11,6 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.ufc.jornal.criptografia.Criptografar;
 import br.ufc.jornal.dao.RoleDao;
@@ -51,28 +59,38 @@ public class UsuarioController {
 		String senha_criptografada = crip.criptografar(senha);		
 		String login = user.getLogin();
 		long roleId = user.getRoleId();
-        
-		
+				
         Usuario  userRef = usuarioDao.getUserLogin(login); 
 		
-        // Lista de Papeis do Usuário
-        List<Role> usuario_roles = userRef.getRoles();
-        List<Long> id_roles = new ArrayList<Long>();
-        
-        // Pecorrendo lista de roles para setar seus os ID dos papeis
-        for (Role r : usuario_roles) {
-			id_roles.add(roleDao.getRoleNome(r.getRole()));
+        if (userRef != null ) {
+        	
+            // Lista de Papeis do Usuário
+            List<Role> usuario_roles = userRef.getRoles();
+            List<Long> id_roles = new ArrayList<Long>();            
+            
+            // Pecorrendo lista de roles para setar os ID dos papeis
+            for (Role r : usuario_roles) {
+    			id_roles.add(roleDao.getRoleNome(r.getRole()));
+    		}
+                                    
+            // Usuário cadastrado pelo Sistema
+    		if(userRef.getSenha().equals(senha_criptografada) && id_roles.contains(roleId)){
+                userRef.setRoleId(roleId);          
+    			session.setAttribute("usuario", userRef);
+    			model.addAttribute("usuario", userRef);  // Adicionando o usuário, para que eu tenha como identifica-lo.
+    			return "../../index";
+    		
+    		}else if(userRef.getSenha().equals(senha) && id_roles.contains(roleId) && roleId != 1){	// Usuário cadastrado manualmente. EX: Editor   		
+    			session.setAttribute("usuario", userRef);
+    			model.addAttribute("usuario", userRef); 
+    			return "../../index";
+    			
+    		}else{
+    	        return "redirect:formularioLogin";		
+    		}
+
 		}
         
-        // Quando for inserir os interceptores, fazer o teste entre o valor que vem da seleção e o papel
-		if(userRef != null && userRef.getSenha().equals(senha_criptografada) && id_roles.contains(roleId)){
-		
-            userRef.setRoleId((long) id_roles.indexOf(roleId)); 
-			session.setAttribute("usuario", userRef);
-			model.addAttribute("usuario", userRef);  // Adicionando meu usuário, para que eu tenha como identifica-lo.
-			return "../../index";
-		
-		}
 		
 		
         return "redirect:formularioLogin";		
@@ -152,9 +170,9 @@ public class UsuarioController {
 		return "/usuario/formulario_jornalista"; 
 	 }
 	 
-	 @RequestMapping("adicionarJornalista")
-	 public String adicionarJornalista(Usuario usuario, HttpSession session){
-		 
+	 @RequestMapping(value= "adicionarJornalista", method=RequestMethod.POST)
+	 public String adicionarJornalista(Usuario usuario, HttpSession session, @RequestParam("imagem")MultipartFile img){
+		
 		 // Criando instância da classe para criptografar a senha do usuario
 		 Criptografar crip = new Criptografar();
 		 
@@ -166,6 +184,32 @@ public class UsuarioController {
 		 
 		 // Pegando o ID referente ao papel de Jornalista
 		 Long id_ref_jornalista = roleDao.getRoleNome("Jornalista");
+		 
+		// Inserindo a Imagem	para o usuário			 
+		 if (!img.isEmpty()) {
+			
+			 try {
+
+				String nome = new Date().getTime() + "-" + img.getOriginalFilename();
+				String caminho = "/home/macilio/jornalImagens/img_jornalista/"+nome;
+				byte[] bytes = img.getBytes();
+				BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(new File(caminho)));
+				output.write(bytes);
+				output.close();
+
+				String nomePasta = "/img_jornalista/"+nome;
+				// Setando caminho da imagem.
+				usuario.setCaminho_imagem(caminho);
+				usuario.setNomeImagem(nomePasta);
+			
+			 } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			return "";
+		}
+
 		
 		 // Caso em que o Usuário está no banco, atualiza e seta um novo papel
 		  if(u != null){ 
@@ -183,14 +227,14 @@ public class UsuarioController {
 			 	 
 			 	 this.usuarioDao.alterar(usuario);
 			 	 
-			 	 return "operacao_realizada";  // Se eu o retorna para para home, ele se passará como um novo usuário.. 
+			 	 return "operacao_realizada";   
 
 		  }else{	 // Caso em que o Usuário não está no banco, atualiza os papéis do usuário e inseri o mesmo
 	
    		         Role papel = roleDao.getRoleId(id_ref_jornalista); 
 		         List<Role> roles = roleDao.usuarioRoles(usuario.getId());
 		         roles.add(papel);
-
+		         
                  usuario.setRoleId(id_ref_jornalista);
 	 	         usuario.setRoles(roles);
 		 
@@ -212,6 +256,5 @@ public class UsuarioController {
 	 
 	 }
 	 
-	 // Caso o usuário queira voltar diretamente para a página principal
 	 
 }

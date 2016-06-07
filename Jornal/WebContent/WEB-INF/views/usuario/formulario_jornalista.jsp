@@ -9,7 +9,7 @@
 <body>
   
      <h2> Formulário Jornalista: </h2>
-     <form action="adicionarJornalista" method="POST">
+     <form action="adicionarJornalista" enctype="multipart/form-data" method="POST">
      <table>
          <tr> 
             <td> Nome do Jornalista: </td>
@@ -30,6 +30,11 @@
          <tr> 
             <td> E-mail: </td>
             <td><input type="text" name="email" ></td>
+         </tr>
+
+         <tr> 
+            <td> Imagem: </td>
+            <td><input type="file" name="imagem" ></td>
          </tr>
          
          <tr> 

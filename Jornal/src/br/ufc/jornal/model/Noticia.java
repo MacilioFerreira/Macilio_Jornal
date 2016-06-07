@@ -44,6 +44,11 @@ public class Noticia {
 	@Column (name = ("VISIVEL"), nullable = false)
 	private boolean isVisivel;
 	
+	@Column(name="CAMINHO_IMAGEM")
+	private String caminho_imagem;
+	
+	private String nomeImagem;
+	
 	// Relacionamentos
 	
 	// Muitas notícias podem estar para uma única seção
@@ -143,6 +148,23 @@ public class Noticia {
 		this.comentarios = comentarios;
 	}
 
+	
+	public String getCaminho_imagem() {
+		return caminho_imagem;
+	}
+
+	public void setCaminho_imagem(String caminho_imagem) {
+		this.caminho_imagem = caminho_imagem;
+	}
+
+	public String getNomeImagem() {
+		return nomeImagem;
+	}
+	
+	public void setNomeImagem(String nomeImagem) {
+		this.nomeImagem = nomeImagem;
+	}
+
 	// To String
 	@Override
 	public String toString() {
@@ -157,6 +179,7 @@ public class Noticia {
 		
 		return sb.toString();
 	}
+
 	
 	
 	

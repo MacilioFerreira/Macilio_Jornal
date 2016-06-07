@@ -55,7 +55,9 @@
          <tr>
             <c:forEach var="role" items="${usuario.roles}">
                 <c:if test="${role.role == 'Leitor' }">
-                   <td><a href="inserirOferta?classificadoId=${cass.classificadoId}"> Inserir Oferta </a><br> </td> 
+                	<c:if test="${usuario.getRoleId() == 1 }">
+                   		<td><a href="inserirOferta?classificadoId=${cass.classificadoId}"> Inserir Oferta </a><br> </td> 
+                	</c:if>
                 </c:if>
             </c:forEach> 
          </tr>
